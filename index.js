@@ -26,18 +26,21 @@ let weeklyData = loadWeeklyData();
 
 function getKoreanDateTimeString() {
   const now = new Date();
+
+  // UTC 기준 -> KST로 보정 (UTC+9)
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
   const options = {
-    timeZone: "Asia/Seoul",
     weekday: "short",
   };
   const formatter = new Intl.DateTimeFormat("ko-KR", options);
-  const weekday = formatter.format(now); // 예: "수"
+  const weekday = formatter.format(kst);
 
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const date = String(now.getDate()).padStart(2, "0");
-  const hour = String(now.getHours()).padStart(2, "0");
-  const minute = String(now.getMinutes()).padStart(2, "0");
+  const year = kst.getFullYear();
+  const month = String(kst.getMonth() + 1).padStart(2, "0");
+  const date = String(kst.getDate()).padStart(2, "0");
+  const hour = String(kst.getHours()).padStart(2, "0");
+  const minute = String(kst.getMinutes()).padStart(2, "0");
 
   return `${year}.${month}.${date}.${weekday}. ${hour}:${minute}`;
 }
